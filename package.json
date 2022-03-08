@@ -1,0 +1,46 @@
+{
+  "name": "grenzenlos",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "npx nodemon server/server.js  -w server",
+    "dev": "npx nodemon server/server.js -w server"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "base64url": "^3.0.1",
+    "body-parser": "^1.19.0",
+    "cloudmersive-barcodeapi-client": "^1.1.5",
+    "cloudmersive-convert-api-client": "^2.6.3",
+    "consolidate": "^0.16.0",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "csvtojson": "^2.0.10",
+    "dateformat": "^3.0.3",
+    "docx-pdf": "0.0.1",
+    "docx-templates": "^4.5.4",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "express-handlebars": "^3.1.0",
+    "express-session": "^1.17.0",
+    "fs": "0.0.1-security",
+    "json-2-csv": "^3.14.4",
+    "md5": "^2.3.0",
+    "moment": "^2.29.1",
+    "mysql": "^2.17.1",
+    "node": "^12.18.3",
+    "node-base64-image": "^2.0.3",
+    "node-fetch": "^2.6.1",
+    "nodemailer": "^6.5.0",
+    "paypal-rest-sdk": "^1.8.1",
+    "qrcode": "^1.4.4",
+    "utf8": "^3.0.0",
+    "util": "^0.12.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4"
+  }
+}
