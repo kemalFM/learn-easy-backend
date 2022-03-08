@@ -133,6 +133,16 @@ router.get("/:sessionToken/:uuid/getOpenQuestions/:topic?", async (req, res, nex
     }
 });
 
+router.get("/getExcelExample", async (req, res, next) => {
+    try {
+        let pathToFile = path.join(__dirname, '..', '..','excels/Questions/Tab.csv' ); 
+        res.attachment('Tab.csv').send(fs.readFileSync(pathToFile))
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
+
 router.get("/:sessionToken/:uuid/getAllQuestions", async (req, res, next) => {
     try {
         db.getAllQuestions(req.params.sessionToken, req.params.uuid).then(response => {

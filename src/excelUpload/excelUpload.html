@@ -5,11 +5,29 @@
     <meta charset="UTF-8">
     <title>Fragen importieren</title>
 </head>
+<style>
+    .test {
+        height: 100%;
+        width: 100%;
+        display: flex;
+
+        align-items: center;
+    }
+</style>
 
 <body>
-    <form method='post' action='/uploadQuestions' enctype="multipart/form-data">
+    <h1>
+        Laden Sie Ihre Fragen hoch
+    </h1>
+    <p>1. Klicken Sie auf "Datei auswählen" und wählen Sie dann die CSV aus</p>
+    <p style="margin-left: 20px">1.1 <a target="_blank"
+            href="https://easy-learn-backend.kfm.digital/getExcelExample">Hier</a> finden
+        Sie ein Beispiel wie die CSV Tabelle aussehen
+        muss</p>
+    <p>2. Klicken Sie auf Senden</p>
+    <p>3. Ihre Fragen wurden nun hochgeladen</p>
+    <form method='post' class="test" action='/uploadQuestions' enctype="multipart/form-data">
         <input type='file' name='file'>
         <input type='submit'>
 </body>
-
 </html>
