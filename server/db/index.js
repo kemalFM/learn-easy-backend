@@ -331,36 +331,40 @@ goDB.getOpenQuestions = (sessionToken, uuid, topic) => {
                 if (err) {
                     console.log('#####.....####', err)
                 }
-                let notAnsweredQuestions = results.filter(quest => {
+                const questionsFromDB = parseQuestionOptions(results)
+                let notAnsweredQuestions = questionsFromDB.filter(quest => {
                     return quest.User === null
                 });
-                let wrongAnsweredQuestions = results.filter(quest => {
+                let wrongAnsweredQuestions = questionsFromDB.filter(quest => {
                     return quest.Result === 0
                 });
-                let rightAnsweredQuestions = results.filter(quest => {
+                let rightAnsweredQuestions = questionsFromDB.filter(quest => {
                     return (quest.Result !== null && quest.Result === 1)
                 });
+
                 const allAnsweredQuestions = wrongAnsweredQuestions.concat(rightAnsweredQuestions)
-                let questions = []
-                allAnsweredQuestions.forEach(quest => {
-                    const foundQuestion = questions.find(question => question.ID === quest.ID)
-                    if (!foundQuestion) {
-                        questions.push({ question: quest, ID: quest.ID, wrongCount: quest.Result === 0 ? 1 : 0, right: quest.Result === 1 ? 1 : 0 })
-                    } else {
-                        foundQuestion.wrongCount = quest.Result === 0 ? foundQuestion.wrongCount + 1 : foundQuestion.wrongCount
-                        foundQuestion.rightCount = quest.Result === 1 ? foundQuestion.rightCount + 1 : foundQuestion.rightCount
-                    }
-                })
-                questions.forEach(question => {
-                    let foundAnsweredQuestions = allAnsweredQuestions.filter(quest => quest.ID === question.ID)
-                    if (foundAnsweredQuestions.length !== 0) {
-                        foundAnsweredQuestions.sort(function (a, b) {
-                            return new Date(b.TimeStamp) - new Date(a.TimeStamp);
-                        });
-                    }
-                    question.latestResult = !!foundAnsweredQuestions[0].Result
-                })
-                resolve({ notAnsweredQuestions: parseQuestionOptions(notAnsweredQuestions), answered: questions })
+                let answeredQuestions = []
+                calculateAllAnsweredQuestions(allAnsweredQuestions, answeredQuestions);
+
+                setLatestResultForQuestions(answeredQuestions, allAnsweredQuestions);
+
+                let moreThanThreeTimesWrong = []
+                findMoreThanThreeTimesWrong(answeredQuestions, moreThanThreeTimesWrong);
+
+                let wrongAnswered = []
+                findLatestWrongAnsweredQuestions(answeredQuestions, wrongAnswered);
+
+                let rightAnswered = []
+                findLatestRightAnsweredQuestions(answeredQuestions, rightAnswered);
+
+                resolve(
+                    {
+                        notAnsweredQuestions: notAnsweredQuestions,
+                        answered: answeredQuestions,
+                        moreThanThreeTimesWrong: moreThanThreeTimesWrong,
+                        wrongAnswered: wrongAnswered,
+                        rightAnswered: rightAnswered,
+                    })
             })
         } else {
             reject({ err: 'userNotAuthorized' })
@@ -368,8 +372,64 @@ goDB.getOpenQuestions = (sessionToken, uuid, topic) => {
     });
 }
 
+
+
+function findLatestRightAnsweredQuestions(answeredQuestions, rightAnswered) {
+    answeredQuestions.forEach(quest => {
+        if (quest.rightCount >= 1 && quest.latestResult === true) {
+            rightAnswered.push(quest);
+        }
+    });
+}
+
+function findLatestWrongAnsweredQuestions(answeredQuestions, wrongAnswered) {
+    answeredQuestions.forEach(quest => {
+        if (quest.wrongCount >= 1 && quest.latestResult === false) {
+            wrongAnswered.push(quest);
+        }
+    });
+}
+
+function findMoreThanThreeTimesWrong(answeredQuestions, moreThanThreeTimesWrong) {
+    answeredQuestions.forEach(quest => {
+        if (quest.wrongCount >= 3 && quest.latestResult === false) {
+            moreThanThreeTimesWrong.push(quest);
+        }
+    });
+}
+
+function setLatestResultForQuestions(answeredQuestions, allAnsweredQuestions) {
+    answeredQuestions.forEach(question => {
+        let foundAnsweredQuestions = allAnsweredQuestions.filter(quest => quest.ID === question.ID);
+        if (foundAnsweredQuestions.length !== 0) {
+            foundAnsweredQuestions.sort(function (a, b) {
+                return new Date(b.TimeStamp) - new Date(a.TimeStamp);
+            });
+        }
+        question.latestResult = !!foundAnsweredQuestions[0].Result;
+        console.log(foundAnsweredQuestions[0].Result, !!foundAnsweredQuestions[0].Result);
+    });
+}
+
+function calculateAllAnsweredQuestions(allAnsweredQuestions, answeredQuestions) {
+    allAnsweredQuestions.forEach(quest => {
+        const foundQuestion = answeredQuestions.find(question => question.ID === quest.ID);
+        if (!foundQuestion) {
+            answeredQuestions.push({ question: quest, ID: quest.ID, wrongCount: quest.Result === 0 ? 1 : 0, rightCount: quest.Result === 1 ? 1 : 0 });
+        } else {
+            foundQuestion.wrongCount = quest.Result === 0 ? foundQuestion.wrongCount + 1 : foundQuestion.wrongCount;
+            foundQuestion.rightCount = quest.Result === 1 ? foundQuestion.rightCount + 1 : foundQuestion.rightCount;
+        }
+    });
+}
+
 function parseQuestionOptions(questions) {
-    return questions.map(question => { return { ...question, options: JSON.parse(question.options) } })
+    try {
+
+        return questions.length !== 0 ? questions.map(question => { console.log('#-#-#-', questions); return { ...question, options: JSON.parse(question.options) } }) : []
+    } catch (err) {
+        console.log(questions, err)
+    }
 }
 
 goDB.ReadCSVAndSaveQuestions = () => {

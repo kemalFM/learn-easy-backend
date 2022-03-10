@@ -33,6 +33,7 @@ var apiInstanceQR = new CloudmersiveBarcodeapiClient.GenerateBarcodeApi();
 var path = require('path')
 var nodemailer = require('nodemailer');
 const { response } = require("express");
+const { get } = require("http");
 let transporter = nodemailer.createTransport({
     name: 'smtp.ionos.de',
     host: 'smtp.ionos.de',
@@ -135,7 +136,7 @@ router.get("/:sessionToken/:uuid/getOpenQuestions/:topic?", async (req, res, nex
 
 router.get("/getExcelExample", async (req, res, next) => {
     try {
-        let pathToFile = path.join(__dirname, '..', '..','excels/Questions/Tab.csv' ); 
+        let pathToFile = path.join(__dirname, '..', '..', 'excels/Questions/Tab.csv');
         res.attachment('Tab.csv').send(fs.readFileSync(pathToFile))
     } catch (e) {
         console.log(e);
