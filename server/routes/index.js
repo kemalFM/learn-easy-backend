@@ -16,33 +16,10 @@ var crypto = require('crypto');
 const base64url = require('base64url');
 const docxConverter = require('docx-pdf');
 var axios = require('axios');
-// var admin = require('firebase-admin');
-var CloudmersiveConvertApiClient = require('cloudmersive-convert-api-client');
-var CloudmersiveBarcodeapiClient = require('cloudmersive-barcodeapi-client');
-var defaultClient = CloudmersiveConvertApiClient.ApiClient.instance;
-var Apikey = defaultClient.authentications['Apikey'];
-Apikey.apiKey = 'f2cea0f4-2e2e-4e6e-b649-dc4b65d4680f';
-var apiInstance = new CloudmersiveConvertApiClient.ConvertDocumentApi();
-
-var qrCodeApi = CloudmersiveBarcodeapiClient.ApiClient.instance;
-var ApikeyQR = qrCodeApi.authentications['Apikey'];
-ApikeyQR.apiKey = 'f2cea0f4-2e2e-4e6e-b649-dc4b65d4680f';
-var apiInstanceQR = new CloudmersiveBarcodeapiClient.GenerateBarcodeApi();
-
-
 var path = require('path')
 var nodemailer = require('nodemailer');
 const { response } = require("express");
 const { get } = require("http");
-let transporter = nodemailer.createTransport({
-    name: 'smtp.ionos.de',
-    host: 'smtp.ionos.de',
-    port: 587,
-    auth: {
-        user: 'befund@ratingen.coronatest-rheinland.de ',
-        pass: 'h7hx8iI#00678ui!v54k1'
-    }
-});
 
 
 
@@ -93,18 +70,6 @@ router.get("/", async (req, res, next) => {
     try {
         // var results = await db.getUser(req.params.sessionToken, req.params.uuid);
         res.json({ works: true });
-    } catch (e) {
-        console.log(e);
-        res.sendStatus(500);
-    }
-});
-
-router.get("/:sessionToken/:uuid/getRandomQuestion", async (req, res, next) => {
-    try {
-        db.getRandomQuestion(req.params.sessionToken, req.params.uuid).then(response => {
-            console.log(response)
-            res.json(response)
-        }).catch(err => { console.log(err); res.json(err) })
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
@@ -188,61 +153,6 @@ router.get("/upload", async (req, res, next) => {
         res.sendStatus(500);
     }
 });
-
-router.post("/:sessionToken/:uuid/changePassword", async (req, res, next) => {
-    try {
-        var results = await db.changePassword(req.body, req.params.sessionToken, req.params.uuid);
-        res.json(results);
-    } catch (e) {
-        console.log(e);
-        res.sendStatus(500);
-    }
-});
-
-router.post("/:sessionToken/:uuid/changeRole", async (req, res, next) => {
-    try {
-        var results = await db.changeRole(req.body, req.params.sessionToken, req.params.uuid);
-        res.json(results);
-    } catch (e) {
-        console.log(e);
-        res.sendStatus(500);
-    }
-});
-
-//ADDITIONAL FUNCTIONS 
-
-createQrImage = (testID) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let image = await axios.get(`https://chart.googleapis.com/chart?cht=qr&chl=${'https://ratingen-backend.ctcr.de/validate/' + testID}&chs=50x50&chld=L|0`, { responseType: 'arraybuffer' });
-            let raw = Buffer.from(image.data).toString('base64');
-            resolve("data:" + image.headers["content-type"] + ";base64," + raw)
-        } catch (err) {
-            resolve('')
-        }
-    })
-}
-
-createQrImageCWA = (link) => {
-    return new Promise(async (resolve, reject) => {
-        if (link !== null) {
-            var callback = function (error, data, response) {
-                if (error) {
-                    console.error("ERROR QRCODEGENERATOR: ", error.message);
-                    resolve('')
-                } else {
-                    console.log('API successfully called')
-                    let raw = Buffer.from(data).toString('base64');
-                    resolve("data:" + 'image/png' + ";base64," + raw)
-                    // resolve(raw)
-                }
-            };
-
-            apiInstanceQR.generateBarcodeQRCode(link, callback);
-        } else { resolve(undefined) }
-    })
-}
-
 
 const randomNumberBetween = (min, max) => {
     return Math.floor(

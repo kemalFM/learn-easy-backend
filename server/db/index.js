@@ -8,39 +8,27 @@ const converter = require('json-2-csv');
 const utf8 = require('utf8');
 var crypto = require('crypto');
 const base64url = require('base64url');
+
 // const poolProd = mysql.createPool({
 //     connectionLimit: 100000,
 //     // host: 'localhost',
-//     host: 'localhost',
-//     user: 'acventis',
-//     password: 'HtZgmf554-87av',
-//     database: 'arasco',
+//     host: '85.214.108.28',
+//     user: 'uni',
+//     password: 'El2!21fw',
+//     database: 'MultiLearn',
 //     port: '3306'
 // });
-
 
 const poolProd = mysql.createPool({
     connectionLimit: 100000,
     // host: 'localhost',
-    host: '85.214.108.28',
-    user: 'uni',
-    password: 'El2!21fw',
-    database: 'MultiLearn',
+    host: process.env.DBHOST,
+    user: process.env.DBUSER,
+    password: process.env.DBPSW,
+    database: process.env.DBNAME,
     port: '3306'
 });
 
-// CREATE USER 'acventis'@'localhost' IDENTIFIED BY 'HtZgmf554-87av';
-
-// GRANT ALL PRIVILEGES ON * . * TO 'acventis'@'localhost';
-// const poolProd = mysql.createPool({
-//     connectionLimit: 100000,
-//     // host: 'localhost',
-//     host: '176.94.98.234',
-//     user: 'acvuser',
-//     password: 'pFvADe2fjUZ4A5RELF',
-//     database: 'acv',
-//     port: '3306'
-// });
 
 const moment = require('moment');
 moment.locale('de');
@@ -217,8 +205,6 @@ goDB.changePassword = (body, sessionToken, uuid) => {
 goDB.changeRole = (body, sessionToken, uuid) => {
     return new Promise(async (resolve, reject) => {
         const role = await goDB.validateSessionTokenAndGetRole(sessionToken, uuid)
-        console.log('######', role)
-        console.log('######', role)
         if (role === 'ADMIN') {
             pool.query(`UPDATE User SET Role = ? WHERE uuid = ? `, [body.Role, body.uuid], (err, results) => {
                 if (err) {
