@@ -1,0 +1,144 @@
+{
+	"info": {
+		"_postman_id": "9fdbdbd0-62c1-49e0-9dd3-8924067472a5",
+		"name": "easy-learn",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "easy-learn",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Username\":\"Kemal\", \n    \"Password\": \"1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"kemal\", \n    \"password\": \"1\",\n    \"Role\": \"USER\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/d34b1b0d3cd86f49574cd07f26f9afa26fe0057ad40829a0e5f6ae15a93565d919f6fcc3e46ed8c31bd62322b3b5ad6c/63366242-6d7b-43ac-83b8-6eddbf85bd2e/registerUser",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"d34b1b0d3cd86f49574cd07f26f9afa26fe0057ad40829a0e5f6ae15a93565d919f6fcc3e46ed8c31bd62322b3b5ad6c",
+								"63366242-6d7b-43ac-83b8-6eddbf85bd2e",
+								"registerUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "saveResult",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Question\": 1,\n    \"Result\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/ed4cbf1090b931737dc008646e7448ee16d2f7d7ddd69f6aeb1eda5226a51397ec8911b331df8242b15e8db203ba43a4/63366242-6d7b-43ac-83b8-6eddbf85bd2e/saveResult",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ed4cbf1090b931737dc008646e7448ee16d2f7d7ddd69f6aeb1eda5226a51397ec8911b331df8242b15e8db203ba43a4",
+								"63366242-6d7b-43ac-83b8-6eddbf85bd2e",
+								"saveResult"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOpenQuestions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/ed4cbf1090b931737dc008646e7448ee16d2f7d7ddd69f6aeb1eda5226a51397ec8911b331df8242b15e8db203ba43a4/63366242-6d7b-43ac-83b8-6eddbf85bd2e/getOpenQuestions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ed4cbf1090b931737dc008646e7448ee16d2f7d7ddd69f6aeb1eda5226a51397ec8911b331df8242b15e8db203ba43a4",
+								"63366242-6d7b-43ac-83b8-6eddbf85bd2e",
+								"getOpenQuestions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getTopics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/ed4cbf1090b931737dc008646e7448ee16d2f7d7ddd69f6aeb1eda5226a51397ec8911b331df8242b15e8db203ba43a4/63366242-6d7b-43ac-83b8-6eddbf85bd2e/getTopics",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ed4cbf1090b931737dc008646e7448ee16d2f7d7ddd69f6aeb1eda5226a51397ec8911b331df8242b15e8db203ba43a4",
+								"63366242-6d7b-43ac-83b8-6eddbf85bd2e",
+								"getTopics"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
