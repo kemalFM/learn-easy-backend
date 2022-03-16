@@ -78,9 +78,6 @@ function toFixedd(x) {
 
 
 let goDB = {};
-//  -------------------------------------------------------------
-//------------------------------IIS------------------------------
-//  ------------------------------------------------------------
 
 goDB.validateSessionTokenAndGetRole = (sessionToken, uuid) => {
     console.log(sessionToken, uuid)
@@ -456,7 +453,6 @@ function extractImage(json) {
     json.forEach(obj => {
         let imageContainer = obj.body.match(/\[\](.*)\n/)
         if (imageContainer !== null) {
-            // console.log(imageContainer[1])
             let imageString = imageContainer[1].match(/\((.*) \"autoxautoxleft\"\)/)
             obj.image = imageString[1]
             obj.body = obj.body.replace(imageContainer[0], '')
